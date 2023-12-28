@@ -3,101 +3,125 @@
 ## Tables of Contents
 - [Project Overview](https://github.com/Phatolic/HR#project-overview)
 - [Data Sources](https://github.com/Phatolic/HR#data-sources)
-- [Data Cleaning/Preparation](https://github.com/Phatolic/HR#data-cleaningpreparation)
+- [Data Transformation & Modeling](https://github.com/Phatolic/HR#data-transformation-and-modeling)
 - [Data Analysis](https://github.com/Phatolic/HR#data-analysis)
 - [Dashboard](https://github.com/Phatolic/HR#dashboarding)
-- [Limitations](https://github.com/Phatolic/HR#results#limitations)
+- [Results]
 
 ### Project Overview
 
-This data analysis project aims to provide insights into the performance of the retail store. By analyzing various aspects of the sales data, we seek to identify trends, make data-driven recommendations, and gain a deeper understanding of the company's sales.  
+This data analysis project aims to provide insights into the performance of the retail store in 2019 and 2020. By analyzing various aspects of the sales data, we seek to identify trends, make data-driven recommendations, and gain a deeper understanding of the company's sales and profits.  
 
 ---
 ### Data Sources
 
-<b>Location Table</b>  
-
-- 
+- Location table: Contains customers information (Index, Location No, State).
+- Products table: Contains products information (Index, Product Code, Product Name, Unit Price, Cost Price).
+- Agents table: Contains agents information (Index, Agent Code, Job Grade, Location, Title, Shift).
+- Orders table: Contains orders information (Order No, Order Date, Agent Code, Location No, Product Code, Quantity, Warehouse Code, Returns, Shippers Code, Customer Satisfaction).
+- Shippers table: Contains shippers information (Index, Shippers Code, Shippers, Delivery Cost).
+- Warehouse table: Contains warehouses information (Index, Warehouse Code, Warehouse Location).
 
 ---
-### Data Cleaning/Preparation
+### Data Transformation and Modeling
 
 #### Power Query
-<b>- Transformed data loads to Transformed data tab in the workbook.  </b>  
 
-<b>Columns:</b>  
+- Location table: Renamed as Dim_Customers.
+- Products table: Renamed as Dim_Products.
+- Agents table: Renamed as Dim_Agents.
+- Orders table: Renamed as Fact_Table. Create the Cus_Satisfaction Status column from the Customer Satisfaction column with 3, 4, 5 are High, Medium, Low respectively.
+- Shippers table: Renamed as Dim_Logistics.
+- Warehouse table: Renamed as Dim_Warehouses.
 
-- Age_Group: Derived from column Age and divided into 5 different groups.  
-
-- Performance Status: Derived from column Performance Rating and divided into High and Low categories.  
-
-- Job Satisfaction Status: Derived from column Job Satisfaction with 1 as Very Satisfied, 2 as Satisfied, 3 as Dissatisfied and 4 as Very Dissatisfied.  
-
-- Distance Status: Derived from column Distance From Home with less than or equals to 10 is Near-by, more than 10 and less than or equals to 20 is Far, and more than 20 is Very-far.
+> Click Close and Load to -> Create a connection -> Add to the data model. Apply this step to every table.
   
+#### Power Pivot
+#### Diagram View
+
+  ![Star_schema](https://github.com/Phatolic/Sales-of-Retail-Store/assets/144981161/077b8f61-466a-47f9-8df4-1ce6ef0a4299)
+
+> Star schema
+#### Data View
+- Fact_Table table:
+  + Order Date: Format as Date type.
+  + Order Date (#Month): Extract month number from the Order Date column.
+  + Order Date (Month Name): Extract month name from the Order Date column.
+  + Order Date (Year): Extract year from the Order Date column.
+  + Order Date (Quarter): Extract month from the Order Date column and place into the 4 quarters.
+    
+- Dim_Products table:
+  + Shoe Size column: Extract size of shoe from Product Name column. Ex: Adidas Shoe Size - 38 -> Size - 38.
+    
+- KPIs:
+  + Sales: ```Sales:=SUMX(Fact_Table, Fact_Table[Quantity] * RELATED(Dim_Products[Unit Price]))```
+  + COGS: ```COGS:=SUMX(Fact_Table,Fact_Table[Quantity]*RELATED(Dim_Products[Cost price]))```
+  + Total QTY: ```Total QTY:=SUM(Fact_Table[Quantity])```
+  + Total Delivery Cost: ```Total Delivery Cost:=SUMX(Fact_Table, Fact_Table[Quantity] * RELATED(Dim_Logistics[Delivery Cost]))```
+  + Total Profit: ```Total Profit:=[Sales] - [COGS] - [Total Delivery Cost]```
+
 ---
 ### Data Analysis   
 <b>- Pivot tables created in Analysis tab in the workbook.  </b>  
 
-> Analysis the employees has left the company. (Attrition column value is Yes)
+1. KPIs
 
-1. Total Employees
+    ![KPI](https://github.com/Phatolic/Sales-of-Retail-Store/assets/144981161/7f1a9d22-6353-416a-b2a4-fcfe5415d6f4)
 
-    ![TotalEmp](https://github.com/Phatolic/HR/assets/144981161/942c5d29-20e2-4556-9773-9117be57a3d1)
+2. Monthly sales in two years
 
-2. Employee Attrition Rate 
+    ![Sales](https://github.com/Phatolic/Sales-of-Retail-Store/assets/144981161/d6e48672-5951-4f19-8a7f-47092a093b58)
 
-    ![EmpAttritionRate](https://github.com/Phatolic/HR/assets/144981161/c54242e5-fead-41d9-8b92-127991204f52)
+3. Profit by Agents
 
-3. Average Age
+    ![ProfitAgent](https://github.com/Phatolic/Sales-of-Retail-Store/assets/144981161/24d1e068-1b24-4ceb-8846-5c5d56b961ce)
 
-    ![AvgAge](https://github.com/Phatolic/HR/assets/144981161/038e0868-7c0a-4f2d-8593-2938a0554c22)
+4. Profit by Agent Shifts
 
-4. Business Travel
+    ![ProfitAgentShift](https://github.com/Phatolic/Sales-of-Retail-Store/assets/144981161/29584857-3dab-4de8-a87b-ebde1d5a9616)
 
-    ![BusinessTravel](https://github.com/Phatolic/HR/assets/144981161/22c40f43-caac-47ce-b03d-ef1d7366bf0a)
+5. Warehouse Quantity Sold
 
-5. Employee Performance Status
+    ![WarehouseQtySold](https://github.com/Phatolic/Sales-of-Retail-Store/assets/144981161/74a2d666-2d2d-4c58-9771-fa1de2839fd6)
 
-   ![PerformanceStatus](https://github.com/Phatolic/HR/assets/144981161/cbb2aa83-ccb7-4ca8-9027-e90ddb1606d7)
+6. Shipping Cost
 
-6. Employee Work Distance
+    ![ShippingCost](https://github.com/Phatolic/Sales-of-Retail-Store/assets/144981161/817662e7-40e1-4f07-9bd8-865d70f724d4)
 
-    ![WorkDis](https://github.com/Phatolic/HR/assets/144981161/3fd0a6eb-bae3-4187-82ac-30d36791c3f0)
-
-7. Employee Job Role
+7. Customer Satisfaction
    
-    ![JobRole](https://github.com/Phatolic/HR/assets/144981161/e77f0302-8d9b-4cf9-bc27-0630a2279095)
+    ![CustomerSatisfaction](https://github.com/Phatolic/Sales-of-Retail-Store/assets/144981161/c5d26c87-5e82-4ec2-ac05-b2702d2338a4)
 
-9. Employee Education
+8. Top 4 products Profit
     
-    ![Education](https://github.com/Phatolic/HR/assets/144981161/6433a0c8-82b0-45b4-ab5f-334cd85b8a45)
+    ![Top4](https://github.com/Phatolic/Sales-of-Retail-Store/assets/144981161/90b9cb94-6d57-4a58-bd03-c5228bf291e1)
 
-11. Age Group & Gender
+9. Profit by Shoe Size
 
-    ![AgeGr_Gender](https://github.com/Phatolic/HR/assets/144981161/bf4d7c3d-d33f-4cc0-b8d5-a7ab3dc81d14)
+    ![ProfitShoeSize](https://github.com/Phatolic/Sales-of-Retail-Store/assets/144981161/61ef2b73-5b79-4b84-9ce9-d460489ec163)
+
+10. Profit by Year
+    
+    ![ProfitYear](https://github.com/Phatolic/Sales-of-Retail-Store/assets/144981161/fd39c7f9-8420-4da0-96a9-cbd449e2335a)
 
 ---
 ### Dashboarding
 
-<b>- Charts created in Charts tab in the workbook.  </b>
+- Build charts for pivot tables.
 - Format the charts and build the dashboard.  
 - Add slicers.
   
-    ![Dashboard](https://github.com/Phatolic/HR/assets/144981161/54b19efc-6613-4537-850a-3db62ffe4a18)
-   
+    ![Dashboard](https://github.com/Phatolic/Sales-of-Retail-Store/assets/144981161/d4db3886-b0e3-44f3-80d1-1a922806255f)
+
+---
 ### Results
 
-<b>-> </b>The high-performed employees are more likely to leave the company than the low_performed ones with 413 employees compared to only 79, respectively. That is accounted for nearly 84% of the left employees.  
+<b>-> </b>The sales figure fluctuates throughout the years with the lowest sales is the February sales. Perhaps it is because it has less days.  
 
-<b>-> </b>The closer the distance from the company to the employees' homes, the higher the number of employees who left the company. Need to dig deeper into this situation.
+<b>-> </b>The customer satisfaction status not very positive with just 40% customers with high satisfaction.
 
-<b>-> </b>Males from every age groups tend to leave the company more frequently than the females.
+<b>-> </b>Discover that the 2020 sales in nearly doubled the sales in 2019.
 
-##### It seems the issue is more company-generated. Should check again the policies for employees and related resources.
-### Limitations
+##### It seems that although the sales is growing with the incredible rate, the customer satisfaction about the company is quite bad so it may cause some problems for the company in the long-run.
 
-- Suggest to look into the environment satisfaction of the employees.
-
-- Look into the monthly income of employees to see if the employee is paid correctly.
 
