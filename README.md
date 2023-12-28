@@ -122,6 +122,6 @@ This data analysis project aims to provide insights into the performance of the 
 
 <b>-> </b>Discover that the 2020 sales in nearly doubled the sales in 2019.
 
-##### It seems that although the sales is growing with the incredible rate, the customer satisfaction about the company is quite bad so it may cause some problems for the company in the long-run.
+##### -> It seems that although the sales is growing with the incredible rate, the customer satisfaction about the company is quite bad so it may cause some problems for the company in the long-run.
 
 
