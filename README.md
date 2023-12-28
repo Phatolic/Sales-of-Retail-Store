@@ -1,12 +1,12 @@
 # Sales-of-Retail-Store
 
 ## Tables of Contents
-- [Project Overview](https://github.com/Phatolic/HR#project-overview)
-- [Data Sources](https://github.com/Phatolic/HR#data-sources)
-- [Data Transformation & Modeling](https://github.com/Phatolic/HR#data-transformation-and-modeling)
-- [Data Analysis](https://github.com/Phatolic/HR#data-analysis)
-- [Dashboard](https://github.com/Phatolic/HR#dashboarding)
-- [Results]
+- [Project Overview](https://github.com/Phatolic/Sales-of-Retail-Store#project-overview)
+- [Data Sources](https://github.com/Phatolic/Sales-of-Retail-Store#data-sources)
+- [Data Transformation & Modeling](https://github.com/Phatolic/Sales-of-Retail-Store#data-transformation-and-modeling)
+- [Data Analysis](https://github.com/Phatolic/Sales-of-Retail-Store#data-analysis)
+- [Dashboard](https://github.com/Phatolic/Sales-of-Retail-Store#dashboarding)
+- [Results](https://github.com/Phatolic/Sales-of-Retail-Store#results)
 
 ### Project Overview
 
